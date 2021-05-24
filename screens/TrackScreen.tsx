@@ -31,7 +31,7 @@ export default function TrackScreen() {
 
     const cur_date_str = cur_date.toISOString().split("T")[0];
     try {
-      console.log("writing ", cur_date_str, value);
+      console.log("writing ", cur_date_str, slider, value);
       await AsyncStorage.setItem(cur_date_str, value.toString());
       setSlpstate(value);
       let toast = Toast.show("Request failed to send.", {
@@ -54,16 +54,16 @@ export default function TrackScreen() {
         darkColor="rgba(255,255,255,0.1)"
       />
 
+      <CustomSlider name="sleep" label="Sleep" initValue={4} callback={save} />
+
       <CustomSlider
-        name="sleep"
-        label="Sleep"
-        initValue={4}
-        style={{ width: "100%" }}
+        name="stress"
+        label="Stress"
+        initValue={3}
+        callback={save}
       />
 
-      <CustomSlider name="stress" label="Stress" initValue={3} />
-
-      <CustomSlider name="steps" label="Steps" initValue={3} />
+      <CustomSlider name="steps" label="Steps" initValue={3} callback={save} />
       {/* <Button onPress={() => save()}>Save </Button> */}
     </View>
   );
