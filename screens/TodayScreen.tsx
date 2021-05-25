@@ -11,7 +11,7 @@ const LeftContent = (props: any) => (
 
 const HamIcon = (props: any) => <Avatar.Icon {...props} icon="hamburger" />;
 
-export default function TodayScreen() {
+export default function TodayScreen({ navigation }) {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled" // http://t.cn/EowE3r3
@@ -44,6 +44,8 @@ export default function TodayScreen() {
           <Button>Done</Button>
         </Card.Actions>
       </Card>
+
+      <Button onPress={() => navigation.push("settings")}>Settings</Button>
     </ScrollView>
   );
 }
