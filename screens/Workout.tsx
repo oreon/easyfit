@@ -7,6 +7,7 @@ import YoutubePlayer from "react-native-youtube-iframe";
 import { useState, useCallback, useRef } from "react";
 import { Button, View, Alert } from "react-native";
 import { WebView } from "react-native-webview";
+import { WORKOUT_URLS } from "./data";
 
 //icon - human
 
@@ -24,12 +25,9 @@ export default function Workout() {
     setPlaying((prev) => !prev);
   }, []);
 
-  let yoga_id = "cRXiZTCPJOM";
-  let strenth_id = "nlY_9eA9dDk";
-
   var time = new Date().getDate();
 
-  let playback_id = time % 2 != 0 ? yoga_id : strenth_id;
+  let playback_id = time % 2 != 0 ? WORKOUT_URLS.odd : WORKOUT_URLS.even;
 
   return (
     // <ScrollView>

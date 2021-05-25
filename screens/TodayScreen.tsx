@@ -5,13 +5,18 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { ScrollView } from "react-native";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { MEAL_PLAN } from "./data";
 const LeftContent = (props: any) => (
   <Avatar.Icon {...props} icon="fruit-pineapple" />
 );
 
 const HamIcon = (props: any) => <Avatar.Icon {...props} icon="hamburger" />;
 
-export default function TodayScreen({ navigation }) {
+export default function TodayScreen() {
+  const day = new Date().getDay();
+  const meals = MEAL_PLAN[day];
+  const breakfast = meals.breakfast ? meals.breakfast : MEAL_PLAN.breakfast;
+
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled" // http://t.cn/EowE3r3
@@ -23,8 +28,9 @@ export default function TodayScreen({ navigation }) {
         <Card.Title title="Breakfast" left={LeftContent} />
         <Card.Content>
           <Title>Around 9 am </Title>
-          <Paragraph>Have a big bowl of fruits</Paragraph>
-          <Paragraph>Soaked almonds or walnuts from previous night</Paragraph>
+          {breakfast.map((item: string) => (
+            <Paragraph>{item}</Paragraph>
+          ))}
         </Card.Content>
         <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
         <Card.Actions>
@@ -36,8 +42,9 @@ export default function TodayScreen({ navigation }) {
         <Card.Title title="Lunch" left={HamIcon} />
         <Card.Content>
           <Title>Between 12-2 pm </Title>
-          <Paragraph>A big bowl of salad</Paragraph>
-          <Paragraph>Oatmeal with salt and pepper</Paragraph>
+          {meals.lunch.map((item: string) => (
+            <Paragraph>{item}</Paragraph>
+          ))}
         </Card.Content>
         <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
         <Card.Actions>
@@ -45,7 +52,7 @@ export default function TodayScreen({ navigation }) {
         </Card.Actions>
       </Card>
 
-      <Button onPress={() => navigation.push("settings")}>Settings</Button>
+      {/* <Button onPress={() => navigation.push("settings")}>Settings</Button> */}
     </ScrollView>
   );
 }

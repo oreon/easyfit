@@ -1,0 +1,8 @@
+1. Settings are not saving 
+2. Reminders should show as local notificaitons when its time - need to use background tasks to keep the app alive.
+3. Render charts based on tracked data
+4. Play audio files 
+5. Images for food
+6. Recipes
+7. Done button is not working
+8. Location based diet
