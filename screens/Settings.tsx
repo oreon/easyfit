@@ -12,6 +12,7 @@ export default function Settings() {
   //   });
 
   const submit = async (data: any) => {
+    //TODO: settings are not getting saved
     console.log("saving settings  ", data);
     await AsyncStorage.mergeItem("settings", data);
   };

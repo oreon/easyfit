@@ -5,12 +5,33 @@ import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { ScrollView } from "react-native";
 import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
+import { createStackNavigator } from "@react-navigation/stack";
 import { MEAL_PLAN } from "./data";
+import MedTrackPlayer from "./TrackPlayer";
 const LeftContent = (props: any) => (
   <Avatar.Icon {...props} icon="fruit-pineapple" />
 );
 
 const HamIcon = (props: any) => <Avatar.Icon {...props} icon="hamburger" />;
+
+const Stack = createStackNavigator();
+
+export function TodayScreenNav() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={TodayScreen} />
+      <Stack.Screen name="Notifications" component={MedTrackPlayer} />
+    </Stack.Navigator>
+  );
+}
+
+export function PlaylistScreen() {
+  return (
+    <View>
+      <Text></Text>
+    </View>
+  );
+}
 
 export default function TodayScreen() {
   const day = new Date().getDay();
