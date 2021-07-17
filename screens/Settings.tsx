@@ -1,10 +1,11 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TimePicker from "../components/TimePicker";
 import WeekdayPicker from "../components/WeekdayPicker";
+import { getData, saveData } from "../utils/AsyncStorageHelper";
 
 export default function Settings() {
   //   const { control, errors, formState, handleSubmit } = useForm<FormData>({
@@ -21,14 +22,18 @@ export default function Settings() {
     <View style={styles.container}>
       <TimePicker label="Workout time" name="wotime"></TimePicker>
       <TimePicker label="Meditation time" name="medtime"></TimePicker>
-      <WeekdayPicker label="Which day you want to fast" name="fastday" />
-      <Button
+      <Text>Which day you want to fast?</Text>
+      <WeekdayPicker
+        label="On which day you want to water fast"
+        name="fastday"
+      />
+      {/* <Button
         mode="contained"
         onPress={() => submit(null)}
         // disabled={!formState.isValid}
       >
         Submit
-      </Button>
+      </Button> */}
     </View>
   );
 }

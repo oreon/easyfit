@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
@@ -8,12 +8,14 @@ import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import StatsScreen from "./StatsScreen";
-import Slider from "@react-native-community/slider";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-root-toast";
 import CustomSlider from "../components/CustomSlider";
+import { getData, storeData } from "../utils/AsyncStorageHelper";
 
 const Tab = createMaterialTopTabNavigator();
+const cur_date_str = new Date().toISOString().split("T")[0];
 
 export function TackTopTabs() {
   return (
@@ -25,27 +27,44 @@ export function TackTopTabs() {
 }
 
 export default function TrackScreen() {
-  //Save the slider values to local storate
-  const save = async (value: number, slider: string) => {
-    const cur_date = new Date();
+  const [slp, setSlpstate] = useState({});
 
-    const cur_date_str = cur_date.toISOString().split("T")[0];
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const rdata = await getData(cur_date_str);
+      const data = JSON.parse(rdata);
+      console.log("read tracked data ", data);
+      //data["sleep"] = setSlpstate(data);
+      setSlpstate(data);
+    }
+
+    fetchMyAPI();
+  }, []);
+
+  //Save the  values to local storage
+  const save = async () => {
     try {
-      console.log("writing ", cur_date_str, slider, value);
-      await AsyncStorage.setItem(cur_date_str, value.toString());
-      setSlpstate(value);
-      let toast = Toast.show("Request failed to send.", {
+      console.log("writing ", cur_date_str, slp);
+      await AsyncStorage.setItem(cur_date_str, JSON.stringify(slp));
+      //setSlpstate(value);
+      let toast = Toast.show("Successfully saved", {
         duration: Toast.durations.SHORT,
       });
     } catch (e) {
-      console.error("couldnt save for ", cur_date, slider);
-      // saving error
-      //TODO show a toast using this library Cross-platform: react-native-root-toast
+      console.error("couldnt save for ", cur_date_str, slp);
+      let toast = Toast.show("Error saving state " + e, {
+        duration: Toast.durations.SHORT,
+      });
     }
   };
 
-  //TODO: make slider a global component
-  const [slp, setSlpstate] = useState(3);
+  const updateSliderVal = async (value: number, slider: string) => {
+    slp[value] = slider;
+    console.log(slp);
+  };
+
+  //TODO: read the values on startup
+
   return (
     <View style={styles.container}>
       <View
@@ -53,18 +72,20 @@ export default function TrackScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-
-      <CustomSlider name="sleep" label="Sleep" initValue={4} callback={save} />
-
+      <Text>{slp ? slp["sleep"] : 0}</Text>
+      <CustomSlider
+        name="sleep"
+        label="Sleep"
+        initValue={slp["sleep"]}
+        callback={updateSliderVal}
+      />
       <CustomSlider
         name="stress"
         label="Stress"
-        initValue={3}
-        callback={save}
+        initValue={slp ? slp["stress"] : 5}
+        callback={updateSliderVal}
       />
-
-      <CustomSlider name="steps" label="Steps" initValue={3} callback={save} />
-      {/* <Button onPress={() => save()}>Save </Button> */}
+      <Button onPress={() => save()}>Save </Button>
     </View>
   );
 }

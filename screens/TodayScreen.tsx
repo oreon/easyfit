@@ -50,7 +50,7 @@ export default function TodayScreen() {
         <Card.Content>
           <Title>Around 9 am </Title>
           {breakfast.map((item: string) => (
-            <Paragraph>{item}</Paragraph>
+            <Paragraph key={item}>{item}</Paragraph>
           ))}
         </Card.Content>
         <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
@@ -64,7 +64,7 @@ export default function TodayScreen() {
         <Card.Content>
           <Title>Between 12-2 pm </Title>
           {meals.lunch.map((item: string) => (
-            <Paragraph>{item}</Paragraph>
+            <Paragraph key={item}>{item}</Paragraph>
           ))}
         </Card.Content>
         <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
