@@ -89,7 +89,6 @@ const ItemToRender = ({ item, index }, indexSelected, vertical) => {
 
 export default function WeekdayPicker(props: any) {
   const [dayofweek, setdayofweek] = useState();
-  const [showDropDown, setShowDropDown] = useState(false);
 
   useEffect(() => {
     async function fetchMyAPI() {
@@ -101,10 +100,6 @@ export default function WeekdayPicker(props: any) {
 
     fetchMyAPI();
   }, []);
-
-  const save = async () => {
-    setShowDropDown(false);
-  };
 
   const handleChange = async (index) => {
     setdayofweek(index);
