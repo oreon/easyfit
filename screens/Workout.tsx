@@ -2,6 +2,7 @@ import * as React from "react";
 import { ScrollView, StyleSheet, Platform, Text, Image } from "react-native";
 
 import { Avatar, Card, Title, Paragraph } from "react-native-paper";
+
 import YoutubePlayer from "react-native-youtube-iframe";
 import Constants from "expo-constants";
 
@@ -26,6 +27,20 @@ export default function Workout() {
   const [isPlaying, setIsPlaying] = React.useState(true);
 
   const [current, setCurrent] = React.useState(1);
+  const [setNumber, setSetNumber] = React.useState(1);
+  const [resting, setResting] = React.useState(false);
+
+  const sets = 2;
+  const exercises = 4;
+  const REST = 3;
+
+  const finished = () => setNumber > sets;
+  const restart = () => {
+    setCurrent(1);
+    setSetNumber(1);
+  };
+
+  //TODO : rest , end workout , switch workout to upper body, play sound, r and l leg, replay
 
   const avatarImage = () => {
     switch (current) {
@@ -35,41 +50,75 @@ export default function Workout() {
         return require("../assets/images/legs/lunge.gif");
       case 3:
         return require("../assets/images/legs/side-lunge.gif");
-      default:
+      case 4:
         return require("../assets/images/legs/glute_bridge.gif");
     }
   };
 
   return (
-    <View style={styles.container}>
-      <CountdownCircleTimer
-        isPlaying={isPlaying}
-        duration={10}
-        size={120}
-        colors={[
-          ["#004777", 0.4],
-          ["#F7B801", 0.4],
-          ["#A30000", 0.2],
-        ]}
-        onComplete={() => {
-          setCurrent(current + 1);
-          return [true];
-        }}
-      >
-        {({ remainingTime, animatedColor }) => (
-          <Animated.Text style={{ color: animatedColor, fontSize: 30 }}>
-            {remainingTime}
-          </Animated.Text>
-        )}
-      </CountdownCircleTimer>
-      <Button
-        title={isPlaying ? "Pause" : "Play"}
-        onPress={() => setIsPlaying((prev) => !prev)}
-      />
-      <Image source={avatarImage()} style={styles.logo} />
+    <ScrollView
+      keyboardShouldPersistTaps="handled" // http://t.cn/EowE3r3
+      automaticallyAdjustContentInsets={false}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+    >
+      <Card style={{ flex: 1, height: "100%" }}>
+        <Card.Title title="Lower body" />
+        <Card.Content>
+          {!finished() && (
+            <View>
+              <Title>
+                Set {setNumber} / {sets}
+              </Title>
+              <Text>
+                Exercise {current}/{exercises}
+                {finished() ? "done" : "ongoing"}
+              </Text>
 
-      <Text>{current}</Text>
-    </View>
+              <CountdownCircleTimer
+                isPlaying={isPlaying}
+                duration={resting ? REST : 4}
+                size={120}
+                colors={[
+                  ["#004777", 0.4],
+                  ["#F7B801", 0.4],
+                  ["#A30000", 0.2],
+                ]}
+                onComplete={() => {
+                  setResting(!resting);
+                  if (resting) {
+                    return [false];
+                  }
+                  setCurrent(exercises !== current ? current + 1 : 1);
+                  if (current == exercises) setSetNumber(setNumber + 1);
+                  console.log("set->", setNumber);
+                  console.log("ex->", current);
+                  return [!finished()];
+                }}
+              >
+                {({ remainingTime, animatedColor }) => (
+                  <Animated.Text style={{ color: animatedColor, fontSize: 30 }}>
+                    {remainingTime}
+                  </Animated.Text>
+                )}
+              </CountdownCircleTimer>
+              {!resting && <Card.Cover source={avatarImage()} />}
+              {resting && <Title> Rest ! </Title>}
+              <Button
+                title={isPlaying ? "Pause" : "Play"}
+                onPress={() => setIsPlaying((prev) => !prev)}
+              />
+            </View>
+          )}
+          {finished() && (
+            <View>
+              <Button title={"Replay"} onPress={restart} />
+              <Title> Well done ! workout finsihed </Title>
+            </View>
+          )}
+        </Card.Content>
+      </Card>
+    </ScrollView>
   );
 }
 
