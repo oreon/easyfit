@@ -72,7 +72,7 @@ export default function Workout() {
               </Title>
               <Text>
                 Exercise {current}/{exercises}
-                {finished() ? "done" : "ongoing"}
+                {/* {finished() ? "done" : "ongoing"} */}
               </Text>
 
               <CountdownCircleTimer
@@ -85,10 +85,13 @@ export default function Workout() {
                   ["#A30000", 0.2],
                 ]}
                 onComplete={() => {
-                  setResting(!resting);
-                  if (resting) {
-                    return [false];
-                  }
+                  // console.log(resting);
+                  // const temp_resting = !resting;
+                  // setResting(!resting);
+                  // //console.log(resting);
+                  // if (temp_resting) {
+                  //   return [false];
+                  // }
                   setCurrent(exercises !== current ? current + 1 : 1);
                   if (current == exercises) setSetNumber(setNumber + 1);
                   console.log("set->", setNumber);
