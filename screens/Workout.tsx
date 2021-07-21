@@ -24,20 +24,23 @@ import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 const legs = ["squat", "lunge", "side-lunge", "glute_bridge"];
 
 export default function Workout() {
-  const [isPlaying, setIsPlaying] = React.useState(true);
+  const sets = 2;
+  const exercises = 4;
+  const REST = 2;
+  const INTERVAL = 4;
+
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   const [current, setCurrent] = React.useState(1);
   const [setNumber, setSetNumber] = React.useState(1);
-  const [resting, setResting] = React.useState(false);
-
-  const sets = 2;
-  const exercises = 4;
-  const REST = 3;
+  const [resting, setResting] = useState(false);
+  const [duration, setDuration] = useState(INTERVAL);
 
   const finished = () => setNumber > sets;
   const restart = () => {
     setCurrent(1);
     setSetNumber(1);
+    setResting(false);
   };
 
   //TODO : rest , end workout , switch workout to upper body, play sound, r and l leg, replay
@@ -52,8 +55,19 @@ export default function Workout() {
         return require("../assets/images/legs/side-lunge.gif");
       case 4:
         return require("../assets/images/legs/glute_bridge.gif");
+
+      // case 3:
+      //   return require("../assets/images/legs/lunge.gif");
+      // case 4:
+      //   return require("../assets/images/legs/side-lunge.gif");
+      // case 5:
+      //   return require("../assets/images/legs/side-lunge.gif");
+      // case 6:
+      //   return require("../assets/images/legs/glute_bridge.gif");
     }
   };
+
+  let prev_resting = resting;
 
   return (
     <ScrollView
@@ -77,7 +91,8 @@ export default function Workout() {
 
               <CountdownCircleTimer
                 isPlaying={isPlaying}
-                duration={resting ? REST : 4}
+                key={duration}
+                duration={duration}
                 size={120}
                 colors={[
                   ["#004777", 0.4],
@@ -85,17 +100,25 @@ export default function Workout() {
                   ["#A30000", 0.2],
                 ]}
                 onComplete={() => {
-                  // console.log(resting);
-                  // const temp_resting = !resting;
-                  // setResting(!resting);
-                  // //console.log(resting);
-                  // if (temp_resting) {
-                  //   return [false];
-                  // }
-                  setCurrent(exercises !== current ? current + 1 : 1);
-                  if (current == exercises) setSetNumber(setNumber + 1);
-                  console.log("set->", setNumber);
-                  console.log("ex->", current);
+                  // console.log(resting.current);
+                  prev_resting = resting;
+                  setResting(!resting);
+                  // console.log("is resting ->", prev_resting);
+                  if (!prev_resting) {
+                    setDuration(REST);
+
+                    setCurrent(exercises !== current ? current + 1 : 1);
+                    if (current == exercises) setSetNumber(setNumber + 1);
+                  } else {
+                    setDuration(INTERVAL);
+                  }
+
+                  // console.log("set->", setNumber);
+                  // console.log("ex->", current);
+
+                  //return !finished() ? [true, 5000] : [true];
+                  //   return
+
                   return [!finished()];
                 }}
               >
@@ -106,7 +129,7 @@ export default function Workout() {
                 )}
               </CountdownCircleTimer>
               {!resting && <Card.Cover source={avatarImage()} />}
-              {resting && <Title> Rest ! </Title>}
+              {resting && <Title> Rest !</Title>}
               <Button
                 title={isPlaying ? "Pause" : "Play"}
                 onPress={() => setIsPlaying((prev) => !prev)}
