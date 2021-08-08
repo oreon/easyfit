@@ -1,11 +1,19 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "react-native-paper";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import TimePicker from "../components/TimePicker";
 import WeekdayPicker from "../components/WeekdayPicker";
-import { getData, saveData } from "../utils/AsyncStorageHelper";
+
+import {
+  Avatar,
+  Button,
+  Card,
+  Title,
+  Paragraph,
+  Text,
+} from "react-native-paper";
 
 export default function Settings() {
   //   const { control, errors, formState, handleSubmit } = useForm<FormData>({
@@ -19,28 +27,44 @@ export default function Settings() {
   };
 
   return (
-    <View style={styles.container}>
-      <TimePicker label="Workout time" name="wotime"></TimePicker>
-      <TimePicker label="Meditation time" name="medtime"></TimePicker>
-      <Text>Which day you want to fast?</Text>
-      <WeekdayPicker
-        label="On which day you want to water fast"
-        name="fastday"
-      />
-      {/* <Button
-        mode="contained"
-        onPress={() => submit(null)}
-        // disabled={!formState.isValid}
-      >
-        Submit
-      </Button> */}
-    </View>
+    <ScrollView
+      keyboardShouldPersistTaps="handled" // http://t.cn/EowE3r3
+      automaticallyAdjustContentInsets={false}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}
+    >
+      <Card>
+        <Card.Title title="Feeding window" />
+        <Card.Content>
+          <Text>
+            We recommed a 6 - 8 hour feeding window and rest of the time you
+            should be only having water / black tea/coffee (without sugar)
+          </Text>
+
+          <TimePicker label="Time for first meal" name="feedStart"></TimePicker>
+          <TimePicker label="Time for last meal" name="feedEnd"></TimePicker>
+        </Card.Content>
+      </Card>
+
+      <Card>
+        <Card.Title title="Feeding window" />
+        <Card.Content>
+          <Text>Which day you want to fast?</Text>
+
+          <WeekdayPicker
+            label="On which day you want to water fast"
+            name="fastday"
+          />
+        </Card.Content>
+      </Card>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: "center", marginHorizontal: 30 },
   input: { marginVertical: 5 },
+
   row: {
     alignItems: "center",
     flexDirection: "row",

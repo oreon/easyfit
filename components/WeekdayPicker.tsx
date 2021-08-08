@@ -1,5 +1,3 @@
-import { Provider, TextInput } from "react-native-paper";
-
 import React, { useState, useEffect } from "react";
 
 import { SafeAreaView, StyleSheet, View, Text } from "react-native";
@@ -116,6 +114,8 @@ export default function WeekdayPicker(props: any) {
       showsVerticalScrollIndicator={false}
       data={wkdays}
       scrollAnimation
+      horizontal={true}
+      showsHorizontalScrollIndicator={false}
       onSelected={({ item, index }) => handleChange(index)}
       renderItem={(option) => ItemToRender(option, dayofweek, true)}
       magnet

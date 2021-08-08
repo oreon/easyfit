@@ -5,11 +5,15 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import useCachedResources from "./hooks/useCachedResources";
 import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import {
+  DefaultTheme,
+  Provider as PaperProvider,
+  Text,
+} from "react-native-paper";
 import * as BackgroundFetch from "expo-background-fetch";
 import * as TaskManager from "expo-task-manager";
 import { RootSiblingParent } from "react-native-root-siblings";
-
+import { RecoilRoot } from "recoil";
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -61,14 +65,18 @@ export default function App() {
     return null;
   } else {
     return (
-      <RootSiblingParent>
-        <PaperProvider theme={theme}>
-          <SafeAreaProvider>
-            <Navigation colorScheme={colorScheme} />
-            <StatusBar />
-          </SafeAreaProvider>
-        </PaperProvider>
-      </RootSiblingParent>
+      <RecoilRoot>
+        <React.Suspense fallback={<Text>Loading...</Text>}>
+          <RootSiblingParent>
+            <PaperProvider theme={theme}>
+              <SafeAreaProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </SafeAreaProvider>
+            </PaperProvider>
+          </RootSiblingParent>
+        </React.Suspense>
+      </RecoilRoot>
     );
   }
 }

@@ -8,6 +8,10 @@ import { Avatar, Button, Card, Title, Paragraph } from "react-native-paper";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MEAL_PLAN } from "./data";
 import MedTrackPlayer from "./TrackPlayer";
+
+import { times } from "../state/atoms";
+import { useRecoilValue } from "recoil";
+
 const LeftContent = (props: any) => (
   <Avatar.Icon {...props} icon="fruit-pineapple" />
 );
@@ -37,6 +41,7 @@ export default function TodayScreen() {
   const day = new Date().getDay();
   const meals = MEAL_PLAN[day];
   const breakfast = meals.breakfast ? meals.breakfast : MEAL_PLAN.breakfast;
+  const timings = useRecoilValue(times);
 
   return (
     <ScrollView
@@ -48,7 +53,7 @@ export default function TodayScreen() {
       <Card>
         <Card.Title title="Breakfast" left={LeftContent} />
         <Card.Content>
-          <Title>Around 9 am </Title>
+          <Title>{timings["feedStart"]}</Title>
           {breakfast.map((item: string) => (
             <Paragraph key={item}>{item}</Paragraph>
           ))}
@@ -64,6 +69,19 @@ export default function TodayScreen() {
         <Card.Content>
           <Title>Between 12-2 pm </Title>
           {meals.lunch.map((item: string) => (
+            <Paragraph key={item}>{item}</Paragraph>
+          ))}
+        </Card.Content>
+        <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
+        <Card.Actions>
+          <Button>Done</Button>
+        </Card.Actions>
+      </Card>
+
+      <Card>
+        <Card.Title title={"Dinner " + timings["feedEnd"]} left={HamIcon} />
+        <Card.Content>
+          {meals.dinner.map((item: string) => (
             <Paragraph key={item}>{item}</Paragraph>
           ))}
         </Card.Content>

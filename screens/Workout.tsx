@@ -43,7 +43,7 @@ export default function Workout() {
     setResting(false);
   };
 
-  //TODO : rest , end workout , switch workout to upper body, play sound, r and l leg, replay
+  //TODO :  end workout , switch workout to upper body, play sound, r and l leg, description
 
   const avatarImage = () => {
     switch (current) {
@@ -115,9 +115,6 @@ export default function Workout() {
 
                   // console.log("set->", setNumber);
                   // console.log("ex->", current);
-
-                  //return !finished() ? [true, 5000] : [true];
-                  //   return
 
                   return [!finished()];
                 }}

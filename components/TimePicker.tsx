@@ -3,8 +3,12 @@ import { View, Text, Platform } from "react-native";
 import { Button } from "react-native-paper";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { getData, storeData } from "../utils/AsyncStorageHelper";
+import { times } from "../state/atoms";
+import { useRecoilState } from "recoil";
 
 export default function TimePicker(props: any) {
+  const [val, setVal] = useRecoilState(times);
+
   const [show, setShow] = useState(false);
   const [date, setDate] = useState(new Date(1598051730000));
 
@@ -25,6 +29,15 @@ export default function TimePicker(props: any) {
     setDate(currentDate);
     await storeData("settings_" + props.name, JSON.stringify(currentDate));
     console.log(currentDate.getHours() + ":" + currentDate.getMinutes());
+    //setFeedStart(currentDate.getHours() + ":" + currentDate.getMinutes());
+    const newVal = {
+      ...val,
+    };
+    newVal[props["name"]] =
+      currentDate.getHours() + ":" + currentDate.getMinutes();
+
+    console.log(val, newVal);
+    setVal(newVal);
   };
 
   return (
@@ -34,7 +47,7 @@ export default function TimePicker(props: any) {
       {show && (
         <DateTimePicker
           testID={props.name}
-          value={date}
+          value={val[props.name]}
           mode="time"
           is24Hour={false}
           display="default"
