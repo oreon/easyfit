@@ -30,14 +30,14 @@ export default function TimePicker(props: any) {
     await storeData("settings_" + props.name, JSON.stringify(currentDate));
     console.log(currentDate.getHours() + ":" + currentDate.getMinutes());
     //setFeedStart(currentDate.getHours() + ":" + currentDate.getMinutes());
-    const newVal = {
-      ...val,
-    };
-    newVal[props["name"]] =
-      currentDate.getHours() + ":" + currentDate.getMinutes();
+    // const newVal = {
+    //   ...val,
+    // };
+    // newVal[props["name"]] =
+    //   currentDate.getHours() + ":" + currentDate.getMinutes();
 
-    console.log(val, newVal);
-    setVal(newVal);
+    // console.log(val, newVal);
+    // setVal(newVal);
   };
 
   return (
@@ -47,7 +47,7 @@ export default function TimePicker(props: any) {
       {show && (
         <DateTimePicker
           testID={props.name}
-          value={val[props.name]}
+          value={date}
           mode="time"
           is24Hour={false}
           display="default"

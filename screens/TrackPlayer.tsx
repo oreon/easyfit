@@ -46,3 +46,11 @@ export default function TrackPlayer() {
     </View>
   );
 }
+
+// export default function TrackPlayer() {
+//   return (
+//     <Surface style={{ flex: 1 }}>
+//       <SoundPlayer title="Breath" name="3_min_breathing" />
+//       <SoundPlayer title="Before meals" name="pre-meals" />
+//     </Surface>
+//   );

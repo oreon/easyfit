@@ -22,6 +22,8 @@ const theme = {
     accent: "yellow",
   },
 };
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
 const TASK_NAME = "BACKGROUND_TASK";
 
@@ -65,6 +67,7 @@ export default function App() {
     return null;
   } else {
     return (
+      // <Provider store={store}>
       <RecoilRoot>
         <React.Suspense fallback={<Text>Loading...</Text>}>
           <RootSiblingParent>
@@ -77,6 +80,7 @@ export default function App() {
           </RootSiblingParent>
         </React.Suspense>
       </RecoilRoot>
+      // </Provider>
     );
   }
 }
