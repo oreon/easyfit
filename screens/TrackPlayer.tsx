@@ -11,7 +11,7 @@ export default function TrackPlayer() {
     console.log("Loading Sound ", filename);
     //const file = ;
     //console.log(file);
-    //TODO improve this shitty code
+    //TODO improve this shitty code - the replay / pause funcitonality is broken
     if (filename === "pre-meals") {
       const { sound } = await Audio.Sound.createAsync(
         require("../assets/audio/pre-meals.mp3")
